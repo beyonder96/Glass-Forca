@@ -49,4 +49,4 @@ Um jogo da forca moderno, elegante e responsivo, desenvolvido com **Blazor WebAs
 -   `/wwwroot/data`: Base de dados das palavras em formato JSON.
 
 ---
-Desenvolvido com ❤️ por Antigravity.
+Desenvolvido com ❤️
