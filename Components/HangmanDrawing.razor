@@ -1,0 +1,63 @@
+@using ionized_pulsar.Services
+
+<div class="hangman-container glass">
+    <svg viewBox="0 0 200 250" class="hangman-svg">
+        <!-- Base structure -->
+        <line x1="20" y1="230" x2="180" y2="230" stroke="white" stroke-width="4" stroke-linecap="round" />
+        <line x1="50" y1="230" x2="50" y2="20" stroke="white" stroke-width="4" stroke-linecap="round" />
+        <line x1="50" y1="20" x2="130" y2="20" stroke="white" stroke-width="4" stroke-linecap="round" />
+        <line x1="130" y1="20" x2="130" y2="50" stroke="white" stroke-width="4" stroke-linecap="round" />
+
+        <!-- Stick figure parts appearing based on incorrect guesses (lives lost) -->
+        <!-- Logic: Lives start at 6, decrease with errors. -->
+        <!-- 5 lives left: Head -->
+        @if (Lives < 6) { <circle cx="130" cy="70" r="20" stroke="var(--secondary-color)" stroke-width="4" fill="transparent" class="draw-anim" /> }
+        <!-- 4 lives left: Body -->
+        @if (Lives < 5) { <line x1="130" y1="90" x2="130" y2="170" stroke="white" stroke-width="4" stroke-linecap="round" class="draw-anim" /> }
+        <!-- 3 lives left: Left Arm -->
+        @if (Lives < 4) { <line x1="130" y1="110" x2="100" y2="140" stroke="white" stroke-width="4" stroke-linecap="round" class="draw-anim" /> }
+        <!-- 2 lives left: Right Arm -->
+        @if (Lives < 3) { <line x1="130" y1="110" x2="160" y2="140" stroke="white" stroke-width="4" stroke-linecap="round" class="draw-anim" /> }
+        <!-- 1 life left: Left Leg -->
+        @if (Lives < 2) { <line x1="130" y1="170" x2="100" y2="210" stroke="white" stroke-width="4" stroke-linecap="round" class="draw-anim" /> }
+        <!-- 0 lives left: Right Leg -->
+        @if (Lives < 1) { <line x1="130" y1="170" x2="160" y2="210" stroke="white" stroke-width="4" stroke-linecap="round" class="draw-anim" /> }
+    </svg>
+</div>
+
+@code {
+    [Parameter] public int Lives { get; set; }
+}
+
+<style>
+    .hangman-container {
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        height: 270px;
+    }
+
+    .hangman-svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .draw-anim {
+        animation: draw 0.5s ease forwards;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+    }
+
+    @@keyframes draw {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+</style>

@@ -1,0 +1,214 @@
+{
+    "Categories": [
+        {
+            "Name": "Tecnologia",
+            "Words": [
+                {
+                    "Text": "COMPUTADOR",
+                    "Hint": "Dispositivo de processamento"
+                },
+                {
+                    "Text": "PROGRAMACAO",
+                    "Hint": "Ato de escrever código"
+                },
+                {
+                    "Text": "ALGORITMO",
+                    "Hint": "Sequência lógica de instruções"
+                },
+                {
+                    "Text": "INTERFACE",
+                    "Hint": "Ponto de interação usuário-sistema"
+                },
+                {
+                    "Text": "INTERNET",
+                    "Hint": "Rede mundial de computadores"
+                },
+                {
+                    "Text": "SISTEMA",
+                    "Hint": "Conjunto de partes integradas"
+                },
+                {
+                    "Text": "BANCODEDADOS",
+                    "Hint": "Armazenamento persistente"
+                },
+                {
+                    "Text": "SOFTWARE",
+                    "Hint": "Parte lógica do computador"
+                },
+                {
+                    "Text": "HARDWARE",
+                    "Hint": "Parte física do computador"
+                }
+            ]
+        },
+        {
+            "Name": "Animais",
+            "Words": [
+                {
+                    "Text": "ELEFANTE",
+                    "Hint": "Possui uma tromba grande"
+                },
+                {
+                    "Text": "GIRAFA",
+                    "Hint": "Pescoço muito comprido"
+                },
+                {
+                    "Text": "LEAO",
+                    "Hint": "O rei da selva"
+                },
+                {
+                    "Text": "TUBARAO",
+                    "Hint": "Predador dos oceanos"
+                },
+                {
+                    "Text": "CANGURU",
+                    "Hint": "Salta muito e tem bolsa"
+                },
+                {
+                    "Text": "ORCA",
+                    "Hint": "Baleia assassina (que não é baleia)"
+                },
+                {
+                    "Text": "PINGUIM",
+                    "Hint": "Ave que não voa e vive no frio"
+                },
+                {
+                    "Text": "TARTARUGA",
+                    "Hint": "Animal lento com casco"
+                }
+            ]
+        },
+        {
+            "Name": "Países",
+            "Words": [
+                {
+                    "Text": "BRASIL",
+                    "Hint": "O país do futebol"
+                },
+                {
+                    "Text": "ALEMANHA",
+                    "Hint": "País da Europa conhecido pela cerveja"
+                },
+                {
+                    "Text": "JAPAO",
+                    "Hint": "Terra do sol nascente"
+                },
+                {
+                    "Text": "CANADA",
+                    "Hint": "País da folha de bordo"
+                },
+                {
+                    "Text": "AUSTRALIA",
+                    "Hint": "País dos cangurus"
+                },
+                {
+                    "Text": "ARGENTINA",
+                    "Hint": "País vizinho do Brasil"
+                },
+                {
+                    "Text": "PORTUGAL",
+                    "Hint": "Nossa pátria mãe"
+                },
+                {
+                    "Text": "ITALIA",
+                    "Hint": "País da pizza e do macarrão"
+                }
+            ]
+        },
+        {
+            "Name": "Frutas",
+            "Words": [
+                {
+                    "Text": "ABACAXI",
+                    "Hint": "Tem coroa mas não é rei"
+                },
+                {
+                    "Text": "MELANCIA",
+                    "Hint": "Grande, verde por fora e vermelha por dentro"
+                },
+                {
+                    "Text": "MORANGO",
+                    "Hint": "Pequena, vermelha e com sementes fora"
+                },
+                {
+                    "Text": "BANANA",
+                    "Hint": "Amarela e alongada"
+                },
+                {
+                    "Text": "LARANJA",
+                    "Hint": "Fruta cítrica rica em vitamina C"
+                },
+                {
+                    "Text": "UVA",
+                    "Hint": "Vem em cachos"
+                },
+                {
+                    "Text": "PERA",
+                    "Hint": "Tem o formato de uma lâmpada"
+                }
+            ]
+        },
+        {
+            "Name": "Esportes",
+            "Words": [
+                {
+                    "Text": "FUTEBOL",
+                    "Hint": "Paixão nacional do Brasil"
+                },
+                {
+                    "Text": "BASQUETE",
+                    "Hint": "Esporte das cestas"
+                },
+                {
+                    "Text": "VOLEI",
+                    "Hint": "Jogado com rede e as mãos"
+                },
+                {
+                    "Text": "NATACAO",
+                    "Hint": "Esporte praticado na piscina"
+                },
+                {
+                    "Text": "TENIS",
+                    "Hint": "Jogado com raquetes"
+                },
+                {
+                    "Text": "SURFE",
+                    "Hint": "Praticado nas ondas do mar"
+                },
+                {
+                    "Text": "BOXE",
+                    "Hint": "Luta com luvas"
+                }
+            ]
+        },
+        {
+            "Name": "Filmes",
+            "Words": [
+                {
+                    "Text": "TITANIC",
+                    "Hint": "O navio que afundou"
+                },
+                {
+                    "Text": "AVATAR",
+                    "Hint": "Seres azuis em Pandora"
+                },
+                {
+                    "Text": "CORINGA",
+                    "Hint": "O maior inimigo do Batman"
+                },
+                {
+                    "Text": "GLADIADOR",
+                    "Hint": "Lutador de arena em Roma"
+                },
+                {
+                    "Text": "INCEPTION",
+                    "Hint": "Filme sobre sonhos dentro de sonhos"
+                },
+                {
+                    "Text": "UP",
+                    "Hint": "Animação com balões e uma casa"
+                }
+            ]
+        }
+    ]
+}

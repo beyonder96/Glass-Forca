@@ -1,0 +1,88 @@
+<div class="keyboard-grid">
+    @foreach (var key in Keys)
+    {
+        <button @key="key"
+                class="key-btn @(UsedKeys.Contains(key) ? "used" : "")" 
+                @onclick="() => HandleClick(key)" 
+                disabled="@(IsDisabled || UsedKeys.Contains(key))">
+            @key
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter] public HashSet<char> UsedKeys { get; set; } = new();
+    [Parameter] public EventCallback<char> OnKeyClick { get; set; }
+    [Parameter] public bool IsDisabled { get; set; } = false;
+
+    private readonly List<char> Keys = "QWERTYUIOPASDFGHJKLZXCVBNM".ToCharArray().ToList();
+
+    private async Task HandleClick(char key)
+    {
+        if (!IsDisabled && !UsedKeys.Contains(key))
+        {
+            await OnKeyClick.InvokeAsync(key);
+        }
+    }
+}
+
+<style>
+    .keyboard-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 0.5rem;
+        max-width: 600px;
+        margin: 1rem auto;
+    }
+
+    /* Adjust for smaller rows if needed, but flex-wrap is also an option */
+    /* For true keyboard layout QWERTY: */
+    
+    .key-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 0.8rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    }
+
+    .key-btn:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+    }
+
+    .key-btn:active:not(:disabled) {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+
+    .key-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: rgba(0, 0, 0, 0.3);
+        box-shadow: none;
+        transform: translateY(4px);
+    }
+
+    .key-btn.used {
+        background: rgba(255, 255, 255, 0.05);
+        color: #888;
+    }
+
+    @@media (max-width: 600px) {
+        .keyboard-grid {
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .key-btn {
+            font-size: 1rem;
+            padding: 0.5rem;
+        }
+    }
+</style>

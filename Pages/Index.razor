@@ -1,0 +1,342 @@
+@page "/"
+@using ionized_pulsar.Services
+@using ionized_pulsar.Components
+@implements IDisposable
+@inject HttpClient Http
+
+<div @ref="gameContainer" class="game-container animate-fade-in" @onkeydown="HandleKeyDown" tabindex="0">
+    <div class="header">
+        <h1>JOGO DA FORCA</h1>
+        <div class="stats-container">
+            <div class="lives-indicator @(Game.CurrentLives <= 2 ? "danger" : "")">
+                Vidas: @Game.CurrentLives
+            </div>
+        </div>
+    </div>
+    
+    <!-- HINT & CATEGORY SECTION -->
+    <div class="info-row">
+        <div class="category-badge glass">
+            <span class="label">TEMA:</span>
+            <span class="value">@Game.CurrentCategory</span>
+        </div>
+        <div class="hint-container glass">
+            <span class="hint-label">DICA:</span>
+            <span class="hint-text">@Game.CurrentHint</span>
+        </div>
+    </div>
+
+    <!-- CATEGORY SELECTOR -->
+    @if (Game.GetCategories().Any())
+    {
+        <div class="category-selector">
+            @foreach (var cat in Game.GetCategories())
+            {
+                <button class="cat-btn @(cat == Game.CurrentCategory ? "active" : "")" 
+                        @onclick="() => Game.SelectCategory(cat)">
+                    @cat
+                </button>
+            }
+        </div>
+    }
+
+    <div class="game-area">
+        <div class="drawing-section">
+            <HangmanDrawing Lives="@Game.CurrentLives" />
+        </div>
+
+        <div class="word-section">
+            <div class="word-display">
+                @foreach (var letter in Game.WordToGuess)
+                {
+                    <span class="letter-box @(Game.GuessedLetters.Contains(letter) ? "revealed" : "") @(Game.Status == GameStatus.Lost && !Game.GuessedLetters.Contains(letter) ? "missed" : "")">
+                        @(Game.GuessedLetters.Contains(letter) || Game.Status == GameStatus.Lost ? letter : "")
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="controls-section">
+        @if (Game.Status == GameStatus.Playing)
+        {
+            <Keyboard UsedKeys="@(new HashSet<char>(Game.GuessedLetters))" OnKeyClick="handleGuess" />
+        }
+        else
+        {
+            <div class="game-over-modal glass">
+                @if (Game.Status == GameStatus.Won)
+                {
+                    <h2 class="win-msg">VOCÊ VENCEU! 🎉</h2>
+                    <p>A palavra era: <strong>@Game.WordToGuess</strong></p>
+                }
+                else
+                {
+                    <h2 class="lose-msg">GAME OVER 💀</h2>
+                    <p>A palavra era: <strong>@Game.WordToGuess</strong></p>
+                }
+                <button class="btn-primary restart-btn" @onclick="StartNewGame">Jogar Novamente</button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private HangmanGame Game { get; set; } = new HangmanGame();
+    private ElementReference gameContainer;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await gameContainer.FocusAsync();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Game.OnStateChanged += HandleStateChanged;
+        
+        try 
+        {
+            var data = await Http.GetFromJsonAsync<WordData>("data/words.json");
+            if (data?.Categories != null)
+            {
+                Game.InitializeData(data.Categories);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading words: {ex.Message}");
+        }
+    }
+
+    private async void HandleStateChanged()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void handleGuess(char letter)
+    {
+        Game.Guess(letter);
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key.Length == 1 && char.IsLetter(e.Key[0]))
+        {
+            Game.Guess(e.Key[0]);
+        }
+    }
+
+    private void StartNewGame()
+    {
+        Game.StartNewGame();
+    }
+    
+    public void Dispose()
+    {
+        Game.OnStateChanged -= HandleStateChanged;
+    }
+}
+
+<style>
+    .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 800px;
+        gap: 1.5rem;
+    }
+
+    .header {
+        text-align: center;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .info-row {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .category-badge, .hint-container {
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        font-size: 0.9rem;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .category-selector {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .cat-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .cat-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .cat-btn.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+    
+    .label, .hint-label {
+        font-weight: 800;
+        color: var(--secondary-color);
+        letter-spacing: 1px;
+    }
+    
+    .value, .hint-text {
+        color: var(--text-color);
+        font-style: italic;
+    }
+
+    .lives-indicator {
+        font-size: 1.2rem;
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        color: #fff;
+    }
+
+    .lives-indicator.danger {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        animation: pulse 1s infinite;
+    }
+
+    .game-area {
+        display: flex;
+        flex-direction: column; /* Mobile first */
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+    }
+
+    .word-display {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .letter-box {
+        width: 2.5rem;
+        height: 3.5rem;
+        border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .letter-box.revealed {
+        border-bottom-color: var(--primary-color);
+        color: white;
+        animation: flipIn 0.5s ease;
+    }
+
+    .letter-box.missed {
+        border-bottom-color: var(--secondary-color);
+        color: var(--secondary-color);
+        opacity: 0.6;
+    }
+
+    .controls-section {
+        width: 100%;
+        min-height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .game-over-modal {
+        padding: 2rem;
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+        animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .restart-btn {
+        margin-top: 1.5rem;
+        width: 100%;
+    }
+
+    .win-msg {
+        color: #4ade80; /* Green */
+        text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+    }
+
+    .lose-msg {
+        color: #f87171; /* Red */
+        text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+    }
+
+    @@keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    @@keyframes flipIn {
+        0% { transform: rotateX(-90deg); opacity: 0; }
+        100% { transform: rotateX(0); opacity: 1; }
+    }
+
+    @@keyframes popIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Desktop responsiveness */
+    @@media (min-width: 768px) {
+        .game-area {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+        }
+        
+        .word-section {
+            padding-top: 2rem;
+        }
+        
+        .letter-box {
+            width: 3rem;
+            height: 4rem;
+            border-bottom-width: 4px;
+            font-size: 2rem;
+        }
+    }
+</style>
