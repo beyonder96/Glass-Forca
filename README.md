@@ -47,6 +47,3 @@ Um jogo da forca moderno, elegante e responsivo, desenvolvido com **Blazor WebAs
 -   `/Components`: Componentes reutilizáveis como Teclado, Desenho da Forca, etc.
 -   `/Services`: Lógica de estado do jogo.
 -   `/wwwroot/data`: Base de dados das palavras em formato JSON.
-
----
-Desenvolvido com ❤️
